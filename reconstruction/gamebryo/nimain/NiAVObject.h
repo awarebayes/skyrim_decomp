@@ -1,5 +1,6 @@
 // Source exposure: mixed (binary-analysis of the pinned image, community-headers).
 // SPDX-License-Identifier: MIT (CommonLibSSE-NG declarations, Copyright (c) 2018 Ryan-rsm-McKenzie; full text: licenses/CommonLibSSE-NG.txt)
+// Code origin: original; the listing and community declarations only
 // Adapted code: no body in this file is copied from a community source; the only inline bodies are the NiPointer assignment (the usual smart-pointer shape, as in NiObjectNET.h), the NiCloningProcess constructor and destructor (members and order read from the listing) and TestBit. Bodies adapted from community sources are listed above (none);
 // bhkCollisionObject: STANDIN COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT); opaque
 // COL_LAYER: STANDIN COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT); 32-bit enum
@@ -47,6 +48,8 @@
 // FindBone, FindFlattenedBone: GUESS; callees at 0xff3b30 and 0xef4c60, bound by hint
 // NiRTTI_BSFlattenedBoneTree, NiRTTI_bhkCollisionObject: COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT); NiRTTI tables
 // kBoneMapName: GUESS; fixed string at 0x332e3e0 used to look up the bone-map extra data
+// PerformOpFunc: GUESS(low); the visitor PerformOp forwards its object to, complete only in the .cpp
+// PostAttachUpdate: COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT); the image's vtable slot 0x33, declared here without virtual so the shared class keeps its vtable order
 #pragma once
 
 #include "NiObject.h"
@@ -60,6 +63,7 @@ class NiExtraData;
 class NiTimeController;
 class TESObjectREFR;
 class NiAVObject;
+class PerformOpFunc;
 
 enum class COL_LAYER : std::uint32_t {};
 
@@ -181,7 +185,7 @@ public:
 	bool RegisterStreamables(NiStream& a_stream) override;  // 1A
 
 	virtual void UpdateControllers();                                   // 25
-	virtual void PerformOp();                                           // 26
+	virtual void PerformOp(PerformOpFunc& a_func);                      // 26
 	virtual void AttachProperty();                                      // 27
 	virtual void SetMaterialNeedsUpdate();                              // 28
 	virtual void SetDefaultMaterialNeedsUpdateFlag();                   // 29
@@ -190,6 +194,8 @@ public:
 	void SetName(const BSFixedString& a_name);
 	NiAVObject* Clone();
 	void RecalculateWorldTransform();
+	// out of line in the image: a body of its own at 0xee0ed0; a vtable slot there, non-virtual here so the shared class keeps its vtable order
+	void PostAttachUpdate();
 	static NiAVObject* GetBoneFromName(NiAVObject* a_root, const BSFixedString& a_name, bool a_flag);
 
 	void SetCollisionLayer(COL_LAYER a_collisionLayer);

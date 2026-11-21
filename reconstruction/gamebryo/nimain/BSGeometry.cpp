@@ -1,5 +1,6 @@
 // Source exposure: mixed (names and declarations from community headers; the listing of the pinned
 // image).
+// Code origin: community declarations; bodies written from the pinned listing
 // Recipe: reconstruction/recipes/o2-fpfast.json
 // Adapted bodies: none
 // 0xefc6e0 BSGeometry::UpdateDownwardPass

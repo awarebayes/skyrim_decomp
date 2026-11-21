@@ -16,7 +16,46 @@
 // 0xeec1a0 NiAVObject::RecalculateWorldTransform
 // 0xee0700 NiAVObject::RegisterStreamables
 // Adapted bodies: none
+// PerformOpFunc: GUESS(low); the visitor the image forwards the object to, slot 1 is its call operator
+// PostAttachParent: GUESS(low); file-local standin for the parent's vtable padding up to byte offset 0x1E8
+// 0xee0ed0 NiAVObject::PostAttachUpdate
+// 0xee0a00 NiAVObject::PerformOp(PerformOpFunc&)
 #include "NiAVObject.h"
+
+// PerformOpFunc: GUESS(low); declared complete only here so the shared class keeps its vtable order.
+class PerformOpFunc
+{
+public:
+    virtual ~PerformOpFunc();
+    virtual void operator()(NiAVObject* a_object) = 0;
+};
+
+// PostAttachParent: GUESS(low); a file-local standin for the parent object. It carries the padding
+// virtuals up to the slot at byte offset 0x1E8 that PostAttachUpdate calls. These must not live on
+// the shared NiNode stand-in, or every class deriving from it would have its vtable shifted.
+class PostAttachParent : public NiAVObject
+{
+public:
+    virtual void Unk_158();  // 158
+    virtual void Unk_160();  // 160
+    virtual void Unk_168();  // 168
+    virtual void Unk_170();  // 170
+    virtual void Unk_178();  // 178
+    virtual void Unk_180();  // 180
+    virtual void Unk_188();  // 188
+    virtual void Unk_190();  // 190
+    virtual void Unk_198();  // 198
+    virtual void Unk_1A0();  // 1A0
+    virtual void Unk_1A8();  // 1A8
+    virtual void Unk_1B0();  // 1B0
+    virtual void Unk_1B8();  // 1B8
+    virtual void Unk_1C0();  // 1C0
+    virtual void Unk_1C8();  // 1C8
+    virtual void Unk_1D0();  // 1D0
+    virtual void Unk_1D8();  // 1D8
+    virtual void Unk_1E0();  // 1E0
+    virtual void Unk_1E8();  // 1E8
+};
 
 void NiAVObject::SetCollisionLayer(COL_LAYER a_collisionLayer)
 {
@@ -127,4 +166,14 @@ void NiAVObject::RecalculateWorldTransform()
     if (IsInvalid(&previousWorld)) {
         previousWorld = world;
     }
+}
+
+void NiAVObject::PerformOp(PerformOpFunc& a_func)
+{
+    a_func(this);
+}
+
+void NiAVObject::PostAttachUpdate()
+{
+    static_cast<PostAttachParent*>(static_cast<NiAVObject*>(parent))->Unk_1E8();
 }

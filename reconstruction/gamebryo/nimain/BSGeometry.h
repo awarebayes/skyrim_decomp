@@ -1,5 +1,6 @@
 // Source exposure: mixed (names and declarations from community headers; base classes, sizes and
 // the compared functions from the pinned image).
+// Code origin: community declarations; bodies written from the pinned listing
 // SPDX-License-Identifier: MIT (CommonLibSSE-NG declarations, Copyright (c) 2018 Ryan-rsm-McKenzie; full text: licenses/CommonLibSSE-NG.txt)
 // BSGeometry: COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT) EXE_RTTI
 // BSGeometry::UpdateDownwardPass, BSGeometry::UpdateSelectedDownwardPass, BSGeometry::SetSelectiveUpdateFlags, BSGeometry::RegisterStreamables, BSGeometry::SaveBinary, BSGeometry::LoadBinary, BSGeometry::UpdateWorldBound, BSGeometry::ProcessClone: COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e, MIT)
