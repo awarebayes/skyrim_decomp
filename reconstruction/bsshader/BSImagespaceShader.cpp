@@ -1,6 +1,6 @@
 // Source exposure: mixed (names and declarations from community headers; the listing of the pinned
 // image).
-// Code origin: bodies written from the local listings; names and declarations follow CommonLibSSE-NG.
+// Code origin: brown-room reconstruction from disassembly
 // Declarations derived from powerof3/CommonLibSSE are GPL-3.0 (its licence).
 // Adapted bodies: none
 // 0x15651e0 BSImagespaceShader::Unk_0D
@@ -12,6 +12,10 @@
 // 0x1540db0 BSImagespaceShader::DispatchCopySubRegion
 // 0x15411e0 BSImagespaceShader::ResetSubRegionTarget
 // ResetSubRegionTarget: GUESS(low)
+// ISShaderInitA, ISShaderInitB, ISShaderInitA::Initialize, ISShaderInitB::Initialize: STANDIN GUESS(low); the two compared initialisers write a tiny object that is not a BSImagespaceShader
+// SPDX-License-Identifier: CC0-1.0
+// 0x1541630 ISShaderInitA::Initialize
+// 0x15410e0 ISShaderInitB::Initialize
 #include "BSImagespaceShader.h"
 
 // RVA 0x150b490, 3 bytes: an empty slot body.
@@ -136,4 +140,42 @@ bool BSImagespaceShader::Setup(ImageSpaceManager*, ImageSpaceEffectParam*)
 void BSImagespaceShader::ResetSubRegionTarget(CopySubRegionRequest* a_request)
 {
     a_request->target->Slot09(0);
+}
+
+// ISShaderInitA: STANDIN GUESS(low); file-local shape of the 0x1541630 object.
+struct ISShaderInitA
+{
+    void* p0;    // 00
+    void* p1;    // 08
+    bool flag;   // 10
+
+    static ISShaderInitA* Initialize(ISShaderInitA* a_self, void* a_p0, void* a_p1);
+};
+
+// ISShaderInitB: STANDIN GUESS(low); file-local shape of the 0x15410e0 object.
+struct ISShaderInitB
+{
+    void* p0;                 // 00
+    bool flag;                // 08
+    std::uint8_t tail[0xB];   // 09
+
+    static ISShaderInitB* Initialize(ISShaderInitB* a_self, void* a_p0);
+};
+
+// RVA 0x1541630, 15 bytes: stores the two pointers, sets the flag and returns the object.
+ISShaderInitA* ISShaderInitA::Initialize(ISShaderInitA* a_self, void* a_p0, void* a_p1)
+{
+    a_self->p0 = a_p0;
+    a_self->p1 = a_p1;
+    a_self->flag = true;
+    return a_self;
+}
+
+// RVA 0x15410e0, 19 bytes: stores the pointer, sets the flag, stores -1 at +0xc and returns the object.
+ISShaderInitB* ISShaderInitB::Initialize(ISShaderInitB* a_self, void* a_p0)
+{
+    a_self->p0 = a_p0;
+    a_self->flag = true;
+    *reinterpret_cast<long long*>(reinterpret_cast<char*>(a_self) + 0xc) = -1;
+    return a_self;
 }
