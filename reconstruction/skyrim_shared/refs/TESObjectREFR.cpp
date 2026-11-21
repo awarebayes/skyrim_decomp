@@ -1,6 +1,5 @@
 // Licence: uses the GetEncounterZone and BGSEncounterZone names from powerof3/CommonLibSSE (see the header), so this file is GPL-3.0.
-// Source exposure: mixed. Drafted by claude-sonnet-5-5 from local listings of the pinned image
-// with types from the header beside this file.
+// Source exposure: mixed (local listings of the pinned image; the header beside this file; community declarations).
 // Bodies adapted from community sources are listed above; tools/check_origin.py reports none other above its threshold at CommonLibSSE-NG b93280e, powerof3/CommonLibSSE 654e55f and momusdigital/fnv_decomp 91e1b6e8.
 // 0x2e6f30 TESObjectREFR::GetScale
 // 0x2f3b70 TESObjectREFR::GetCurrentLocation
@@ -16,7 +15,15 @@
 // 0x2f41e0 TESObjectREFR::GetDistanceBetweenSquared
 // 0x2df5b0 TESObjectREFR::ForwardExtraList
 // 0x2f6280 TESObjectREFR::QueryExtraList
+// 0x2ebcb0 TESObjectREFR::Function2ebcb0
+// 0x2f5930 TESObjectREFR::Function2f5930
+// 0x3002f0 TESObjectREFR::Function3002f0
+// 0x300310 TESObjectREFR::Function300310
+// WorldLookup, worldLookup, WorldLookup::Function1a2200: GUESS(low)
 // ForwardExtraList, QueryExtraList, ExtraDataList::Unk15eb00, ExtraDataList::Unk166af0: GUESS(low)
+// Code origin: brown-room reconstruction from disassembly; the listing and community declarations only
+// SPDX-License-Identifier: CC0-1.0
+// Adapted bodies: none
 #include "TESObjectREFR.h"
 
 #include <limits>
@@ -219,4 +226,39 @@ void* TESObjectREFR::QueryExtraList() const
 {
     const ExtraDataList* list = &extraList;
     return list ? list->Unk166af0() : nullptr;
+}
+
+// WorldLookup, worldLookup: GUESS(low); the singleton-global the lookup goes through and its
+// cell-to-worldspace entry point.
+class WorldLookup
+{
+public:
+    TESWorldSpace* Function1a2200(TESObjectCELL* a_cell, const void* a_context);
+};
+
+extern WorldLookup* worldLookup;
+
+TESWorldSpace* TESObjectREFR::Function2ebcb0() const
+{
+    return worldLookup->Function1a2200(parentCell, nullptr);
+}
+
+bool TESObjectREFR::Function2f5930() const
+{
+    return loadedData ? loadedData->unk2A > 0 : false;
+}
+
+void TESObjectREFR::Function3002f0()
+{
+    if (data.objectReference->formType == FormType::Light) {
+        return extraList.Function16c9f0();
+    }
+}
+
+bool TESObjectREFR::Function300310() const
+{
+    if (data.objectReference->formType == FormType::Light) {
+        return extraList.Function16cb90();
+    }
+    return false;
 }
