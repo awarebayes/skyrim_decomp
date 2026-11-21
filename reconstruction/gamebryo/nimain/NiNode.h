@@ -1,5 +1,5 @@
 // Source exposure: mixed (binary-analysis, community headers).
-// Origin: original reconstruction; types informed by CommonLibSSE-NG.
+// Code origin: brown-room reconstruction from disassembly
 // NiNode: EXE_RTTI
 // NiNode: COMMUNITY(CharmedBaryon/CommonLibSSE-NG@b93280e832f263dbef44e44cbe2936622a02f91a, MIT)
 // Function4182a0, UpdateFirst, UpdateSecond, Function152a290, Function14e7f80, Functionfde7a0, UpdateFloat, QueryFlag, UpdateNode, Function6e9a50, GetPackageThatIsRunning, GetSpecialPackage, GetRunningOverride, Function639890, ConvertPosition, CountPosition: GUESS(low)
