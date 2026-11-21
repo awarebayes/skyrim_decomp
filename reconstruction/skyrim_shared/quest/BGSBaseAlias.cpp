@@ -2,6 +2,7 @@
 // image).
 // Adapted bodies: none (write "none" when attempt prints no "origin advice" line;
 // otherwise name each adapted body, its upstream file, revision and licence).
+// Code origin: community declarations; bodies written from the pinned listing
 // 0x392c60 BGSBaseAlias::~BGSBaseAlias
 #include "BGSBaseAlias.h"
 
