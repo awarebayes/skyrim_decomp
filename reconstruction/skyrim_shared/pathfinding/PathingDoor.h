@@ -1,16 +1,19 @@
 // Source exposure: mixed (local binary analysis and public names).
-// Origin: {"generator_family":"member-return","generator_version":"2","name_source":{"confidence":"low","kind":"guess","owner":"PathingDoor","rationale":"vtable owner and slot; method spelling invented","slot":2},"template_digest":"1254832e5ca7cdca7f6330a2018dde32919625f6149744dd0138e59a943106d8"}
-// Adapted bodies: none. Body synthesized from the bounded leaf template.
+// Code origin: brown-room reconstruction from disassembly
+// SPDX-License-Identifier: CC0-1.0
 // PathingDoor: EXE_RTTI
-// Slot2: GUESS(low)
+// Slot2, Function4e0ee0, Function4e0f40: GUESS(low)
 // member, padding: GUESS(low); storage names invented for the measured member offset
+// PathingDoorVirtualTarget: GUESS(low) STANDIN
 #pragma once
 #include <cstdint>
-// Slot2: GUESS(low); method name inferred from vtable owner and slot
+class PathingDoorVirtualTarget;
 class PathingDoor
 {
 public:
     virtual std::uint32_t Slot2() const;
+    void Function4e0ee0(PathingDoorVirtualTarget* target);
+    void Function4e0f40(PathingDoorVirtualTarget* target);
     std::uint8_t padding[0x8];
     std::uint32_t member;
 };
